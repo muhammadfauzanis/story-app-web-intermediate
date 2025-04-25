@@ -67,10 +67,10 @@ export default class LoginPage {
         const result = await loginUser({ email, password });
 
         const { token } = result.loginResult;
-        localStorage.setItem('token', token); // 🔐 Simpan token
+        localStorage.setItem('token', token);
 
         alert('Login berhasil!');
-        window.location.hash = '#/'; // redirect ke halaman beranda/dashboard
+        window.location.hash = '#/';
       } catch (error) {
         alert(`Login gagal: ${error.message}`);
       } finally {

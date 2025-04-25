@@ -1,1 +1,15 @@
 @import 'tailwindcss';
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: fade 500ms ease-in-out;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}

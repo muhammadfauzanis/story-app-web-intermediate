@@ -1,9 +1,32 @@
 import '../styles/styles.css';
 import App from './pages/app';
 import Navbar from './components/navbar';
+import { subscribeNotification } from './notification';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Render Navbar ke container
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    try {
+      await navigator.serviceWorker.register('/sw.js');
+      console.log('Service Worker registered');
+
+      const token = localStorage.getItem('token');
+
+      if (token && Notification.permission === 'granted') {
+        await subscribeNotification();
+        console.log('Web Push subscribed');
+      }
+
+      if (token && Notification.permission === 'default') {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          await subscribeNotification();
+        }
+      }
+    } catch (err) {
+      console.error('Service Worker registration failed:', err);
+    }
+  }
+
   const navbarContainer = document.getElementById('navbar-container');
   navbarContainer.innerHTML = await Navbar.render();
   await Navbar.afterRender();
@@ -15,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   await app.renderPage();
+
   window.addEventListener('hashchange', async () => {
     await app.renderPage();
   });

@@ -53,7 +53,7 @@ const Navbar = {
         localStorage.removeItem('token');
         alert('Berhasil logout!');
         window.location.hash = '#/login';
-        window.location.reload(); // atau trigger re-render navbar jika pakai SPA
+        window.location.reload();
       });
     }
   },

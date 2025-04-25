@@ -75,7 +75,6 @@ export default class RegisterPage {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
 
-      // 🔒 Disable tombol & ganti teks
       button.disabled = true;
       button.textContent = 'Loading...';
 
@@ -86,7 +85,6 @@ export default class RegisterPage {
       } catch (error) {
         alert(`Gagal daftar: ${error.message}`);
       } finally {
-        // 🔓 Aktifkan kembali tombol
         button.disabled = false;
         button.textContent = 'Register';
       }
