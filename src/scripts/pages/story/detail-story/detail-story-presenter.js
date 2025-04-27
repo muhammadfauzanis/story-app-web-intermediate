@@ -1,17 +1,11 @@
-import { getStoryDetail } from '../../data/api';
+import { getStoryDetail } from '../../../data/api';
 
-export default class StoryDetailPage {
-  async render() {
-    return `
-      <section class="min-h-screen px-6 py-10 bg-gray-50">
-        <div id="story-detail" class="max-w-3xl mx-auto">
-          <p class="text-center text-gray-500">Memuat cerita...</p>
-        </div>
-      </section>
-    `;
+export default class StoryDetailPresenter {
+  async init() {
+    this.#loadStoryDetail();
   }
 
-  async afterRender() {
+  async #loadStoryDetail() {
     const container = document.getElementById('story-detail');
     const token = localStorage.getItem('token');
 
@@ -43,14 +37,16 @@ export default class StoryDetailPage {
             }</p>
             ${
               story.lat && story.lon
-                ? `<p class="text-sm text-gray-600 mt-4">Lokasi: (${story.lat}, ${story.lon})</p>`
+                ? `
+              <p class="text-sm text-gray-600 mt-4">Lokasi: (${story.lat}, ${story.lon})</p>
+            `
                 : ''
             }
           </div>
         </div>
       `;
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       container.innerHTML = `<p class="text-red-500 text-center">Gagal memuat cerita. Pastikan ID valid dan token aktif.</p>`;
     }
   }

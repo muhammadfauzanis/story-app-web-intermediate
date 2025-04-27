@@ -13,23 +13,34 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export const subscribeNotification = async () => {
-  const registration = await navigator.serviceWorker.ready;
-  const subscription = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
-  });
+  try {
+    const registration = await navigator.serviceWorker.ready;
+    const subscription = await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+    });
 
-  const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Token tidak ditemukan');
 
-  const response = await fetch(ENDPOINTS.SUBSCRIBE, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(subscription),
-  });
+    const response = await fetch(ENDPOINTS.SUBSCRIBE, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(subscription),
+    });
 
-  const data = await response.json();
-  return data;
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Gagal subscribe notifikasi.');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Gagal melakukan subscribe:', error.message);
+    throw error;
+  }
 };

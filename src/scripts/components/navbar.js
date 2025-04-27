@@ -10,7 +10,7 @@ const Navbar = {
     const buttonLink = token ? '#/dashboard' : '#/login';
 
     return `
-      <nav class="fixed top-0 left-0 w-full bg-white shadow-sm z-50 px-6 md:px-10 lg:px-20 xl:px-28 py-4 flex justify-between items-center">
+      <nav class="fixed top-0 left-0 w-full bg-white shadow-sm z-40 px-6 md:px-10 lg:px-20 xl:px-28 py-4 flex justify-between items-center">
         <a href="#/" class="text-xl font-bold italic text-black">Tempat Curhatmu</a>
 
         <div class="hidden md:block bg-gray-100 px-5 py-2 rounded-full">
