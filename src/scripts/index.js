@@ -4,6 +4,15 @@ import Navbar from './components/navbar';
 import { subscribeNotification } from './notification';
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const skipLink = document.querySelector('.skip-link');
+  const mainContent = document.getElementById('main-content');
+
+  skipLink?.addEventListener('click', (event) => {
+    event.preventDefault(); // Cegah reload
+    mainContent?.setAttribute('tabindex', '-1'); // Buat bisa fokus
+    mainContent?.focus(); // Fokuskan
+    mainContent?.scrollIntoView({ behavior: 'smooth' }); // Scroll smooth
+  });
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     try {
       await navigator.serviceWorker.register('/sw.js');
