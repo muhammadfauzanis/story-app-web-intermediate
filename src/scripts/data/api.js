@@ -8,7 +8,6 @@ const ENDPOINTS = {
   SUBSCRIBE: `${CONFIG.BASE_URL}/notifications/subscribe`,
 };
 
-// Register
 const registerUser = async ({ name, email, password }) => {
   const response = await fetch(ENDPOINTS.REGISTER, {
     method: 'POST',
@@ -24,7 +23,6 @@ const registerUser = async ({ name, email, password }) => {
   return response.json();
 };
 
-// Login
 const loginUser = async ({ email, password }) => {
   const response = await fetch(ENDPOINTS.LOGIN, {
     method: 'POST',
@@ -40,7 +38,6 @@ const loginUser = async ({ email, password }) => {
   return response.json();
 };
 
-// Get all stories
 const getAllStories = async (page = 1, size = 12) => {
   const token = localStorage.getItem('token');
   const response = await fetch(
@@ -60,7 +57,6 @@ const getAllStories = async (page = 1, size = 12) => {
   return response.json();
 };
 
-// Get single story by ID
 const getStoryDetail = async (id) => {
   const token = localStorage.getItem('token');
   const response = await fetch(ENDPOINTS.STORY_DETAIL(id), {
@@ -90,7 +86,6 @@ const postStory = async ({ description, photo, lat, lon }) => {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${token}`,
-      // ❌ Jangan atur Content-Type secara manual saat pakai FormData
     },
     body: formData,
   });
@@ -100,7 +95,7 @@ const postStory = async ({ description, photo, lat, lon }) => {
     throw new Error(errorData.message);
   }
 
-  return response.json(); // => { error: false, message: "success" }
+  return response.json(); 
 };
 
 export {
