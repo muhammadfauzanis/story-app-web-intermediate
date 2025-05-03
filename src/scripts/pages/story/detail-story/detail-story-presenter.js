@@ -1,4 +1,5 @@
 import { getStoryDetail } from '../../../data/api';
+import { saveStory } from '../../../utils/indexeddb';
 
 export default class StoryDetailPresenter {
   async init() {
@@ -37,14 +38,27 @@ export default class StoryDetailPresenter {
             }</p>
             ${
               story.lat && story.lon
-                ? `
-              <p class="text-sm text-gray-600 mt-4">Lokasi: (${story.lat}, ${story.lon})</p>
-            `
+                ? `<p class="text-sm text-gray-600 mt-4">Lokasi: (${story.lat}, ${story.lon})</p>`
                 : ''
             }
+            <button id="save-story-btn" class="mt-6 bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+              Simpan Cerita
+            </button>
           </div>
         </div>
       `;
+
+      document
+        .getElementById('save-story-btn')
+        ?.addEventListener('click', async () => {
+          try {
+            await saveStory(story);
+            alert('Cerita berhasil disimpan untuk offline!');
+          } catch (err) {
+            console.error(err);
+            alert('Gagal menyimpan cerita.');
+          }
+        });
     } catch (error) {
       console.error(error);
       container.innerHTML = `<p class="text-red-500 text-center">Gagal memuat cerita. Pastikan ID valid dan token aktif.</p>`;

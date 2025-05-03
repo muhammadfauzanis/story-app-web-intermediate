@@ -5,15 +5,19 @@ import RegisterPage from '../pages/auth/register/register-page';
 import AddStoryPage from '../pages/story/add-story/add-story-page';
 import StoryListPage from '../pages/story/all-story/show-story-page';
 import StoryDetailPage from '../pages/story/detail-story/detail-story-page';
+import SavedStoriesPage from '../pages/story/saved-stories-page';
+import NotFoundPage from '../pages/not-found-page';
 
 const routes = {
-  '/': new HomePage(),
-  '/about': new AboutPage(),
-  '/login': new LoginPage(),
-  '/register': new RegisterPage(),
-  '/add-story': new AddStoryPage(),
-  '/stories': new StoryListPage(),
-  '/stories/:id': new StoryDetailPage(),
+  '/': HomePage,
+  '/about': AboutPage,
+  '/login': LoginPage,
+  '/register': RegisterPage,
+  '/add-story': AddStoryPage,
+  '/stories': StoryListPage,
+  '/stories/:id': StoryDetailPage,
+  '/saved-stories': SavedStoriesPage,
 };
 
 export default routes;
+export { NotFoundPage };

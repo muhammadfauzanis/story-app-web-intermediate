@@ -1,0 +1,16 @@
+{
+  "name": "Tempat Curhatmu",
+  "short_name": "Curhat",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "description": "Aplikasi berbagi cerita yang bisa kamu install",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

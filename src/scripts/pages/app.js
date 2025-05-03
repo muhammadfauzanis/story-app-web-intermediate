@@ -1,10 +1,11 @@
+import NotFoundPage from '../pages/not-found-page';
 import routes from '../routes/routes';
 import { getActiveRoute } from '../routes/url-parser';
 
 class App {
-  #content = null;
-  #drawerButton = null;
-  #navigationDrawer = null;
+  #content;
+  #drawerButton;
+  #navigationDrawer;
 
   constructor({ navigationDrawer, drawerButton, content }) {
     this.#content = content;
@@ -20,24 +21,26 @@ class App {
     });
 
     document.body.addEventListener('click', (event) => {
-      if (
+      const isOutsideDrawer =
         !this.#navigationDrawer.contains(event.target) &&
-        !this.#drawerButton.contains(event.target)
-      ) {
+        !this.#drawerButton.contains(event.target);
+
+      if (isOutsideDrawer) {
         this.#navigationDrawer.classList.remove('open');
       }
+    });
 
-      this.#navigationDrawer.querySelectorAll('a').forEach((link) => {
-        if (link.contains(event.target)) {
-          this.#navigationDrawer.classList.remove('open');
-        }
+    this.#navigationDrawer.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        this.#navigationDrawer.classList.remove('open');
       });
     });
   }
 
   async renderPage() {
     const url = getActiveRoute();
-    const page = routes[url];
+    const PageClass = routes[url] || NotFoundPage;
+    const page = new PageClass();
 
     const renderContent = async () => {
       this.#content.innerHTML = await page.render();
@@ -45,9 +48,7 @@ class App {
     };
 
     if (document.startViewTransition) {
-      document.startViewTransition(() => {
-        renderContent();
-      });
+      document.startViewTransition(() => renderContent());
     } else {
       await renderContent();
     }

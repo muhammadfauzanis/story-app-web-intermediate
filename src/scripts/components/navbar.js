@@ -1,6 +1,7 @@
 const links = [
   { name: 'Cerita Mu', link: '#/stories' },
   { name: 'Tambah Cerita', link: '#/add-story' },
+  { name: 'Cerita Tersimpan', link: '#/saved-stories' },
 ];
 
 const Navbar = {
