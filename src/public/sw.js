@@ -1,8 +1,18 @@
 self.addEventListener('push', function (event) {
-  const data = event.data.json();
+  let data = {
+    title: 'Notifikasi',
+    options: {
+      body: 'Ada aktivitas baru!',
+    },
+  };
 
-  const title = data.title || 'Notifikasi Baru';
-  const options = data.options || {};
+  if (event.data) {
+    try {
+      data = event.data.json();
+    } catch (e) {
+      console.error('Gagal parsing notifikasi:', e);
+    }
+  }
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  event.waitUntil(self.registration.showNotification(data.title, data.options));
 });

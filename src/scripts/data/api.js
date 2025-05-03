@@ -95,7 +95,45 @@ const postStory = async ({ description, photo, lat, lon }) => {
     throw new Error(errorData.message);
   }
 
-  return response.json(); 
+  return response.json();
+};
+
+const subscribePushNotification = async (subscription) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(ENDPOINTS.SUBSCRIBE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(subscription),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Gagal subscribe notifikasi');
+  }
+
+  return response.json();
+};
+
+const unsubscribePushNotification = async (subscription) => {
+  const token = localStorage.getItem('token');
+  const response = await fetch(ENDPOINTS.SUBSCRIBE, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ endpoint: subscription.endpoint }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Gagal unsubscribe notifikasi');
+  }
+
+  return response.json();
 };
 
 export {
@@ -105,4 +143,6 @@ export {
   getAllStories,
   getStoryDetail,
   postStory,
+  subscribePushNotification,
+  unsubscribePushNotification,
 };

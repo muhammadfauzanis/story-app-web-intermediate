@@ -1,38 +1,46 @@
 import '../styles/styles.css';
 import App from './pages/app';
 import Navbar from './components/navbar';
-import { subscribeNotification } from './notification';
+import { subscribeNotification } from './utils/notification';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const skipLink = document.querySelector('.skip-link');
   const mainContent = document.getElementById('main-content');
 
-  skipLink?.addEventListener('click', (event) => {
-    event.preventDefault(); // Cegah reload
-    mainContent?.setAttribute('tabindex', '-1'); // Buat bisa fokus
-    mainContent?.focus(); // Fokuskan
-    mainContent?.scrollIntoView({ behavior: 'smooth' }); // Scroll smooth
-  });
+  if (skipLink && mainContent) {
+    skipLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      mainContent.setAttribute('tabindex', '-1');
+      mainContent.focus();
+      mainContent.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     try {
-      await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered');
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      console.log('✅ Service Worker registered');
 
       const token = localStorage.getItem('token');
 
-      if (token && Notification.permission === 'granted') {
-        await subscribeNotification();
-        console.log('Web Push subscribed');
-      }
+      if (token) {
+        const permission = Notification.permission;
 
-      if (token && Notification.permission === 'default') {
-        const permission = await Notification.requestPermission();
         if (permission === 'granted') {
           await subscribeNotification();
+          console.log('✅ Web Push subscribed');
+        }
+
+        if (permission === 'default') {
+          const newPermission = await Notification.requestPermission();
+          if (newPermission === 'granted') {
+            await subscribeNotification();
+            console.log('✅ Web Push subscribed (after permission)');
+          }
         }
       }
     } catch (err) {
-      console.error('Service Worker registration failed:', err);
+      console.error('❌ Service Worker registration failed:', err);
     }
   }
 
